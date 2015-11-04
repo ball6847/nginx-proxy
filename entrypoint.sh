@@ -15,6 +15,6 @@ do
 done < /nginx-proxy/proxy.conf
 
 # debug our result
-cat $PROXY_FILE
+#cat $PROXY_FILE
 
 nginx -g "daemon off;"

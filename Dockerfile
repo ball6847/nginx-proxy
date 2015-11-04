@@ -8,7 +8,7 @@ RUN apk --update add bash && \
     mkdir -p /nginx-proxy
 
 COPY . /nginx-proxy/
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY nginx.conf /etc/nginx/conf/nginx.conf
 
 WORKDIR /etc/nginx
 
