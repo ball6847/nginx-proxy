@@ -4,7 +4,7 @@ nginx-proxy is simple nginx container acting as proxy server to your running con
 
 ## Usage:
 
-```sh
+```bash
 docker run -d \
   --name nginx-proxy \
   -p 80:80 \
@@ -26,12 +26,23 @@ while `example.com` is domain name you want to use to access the proxy, and `ngi
 ### VHOST Template
 
 You can use you own vhost template using [Mustache Template Engine for Bash](https://github.com/tests-always-included/mo) Syntax,
-just mount a volume at /nginx-proxy/vhost.tpl, please see [vhost.tpl](https://github.com/ball6847/nginx-proxy/blob/master/vhost.tpl) for original template.
+just mount a volume at `/nginx-proxy/vhost.tpl`, please see [vhost.tpl](https://github.com/ball6847/nginx-proxy/blob/master/vhost.tpl) for original template.
 
-```sh
-docker run -d --name nginx-proxy \
+```bash
+docker run -d \
+  --name nginx-proxy \
   -p 80:80 \
   -v $PWD/proxy.conf:/nginx-proxy/proxy.conf \
   -v $PWD/vhost.rpl:/nginx-proxy/vhost.tpl \
   ball6847/nginx-proxy
 ```
+
+## CREDIT
+
+- Base image using [LoicMahieu/alpine-nginx](https://github.com/LoicMahieu/alpine-nginx), [quay.io](https://quay.io/repository/loicmahieu/alpine-nginx?tag=latest)
+- [Mustache Template Engine for Bash](https://github.com/tests-always-included/mo)
+
+
+## MAINTAINER
+
+- Porawit Poboonma ([ball6847](https://github.com/ball6847))
