@@ -26,7 +26,7 @@ while `example.com` is domain name you want to use to access the proxy, and `ngi
 ### VHOST Template
 
 You can use you own vhost template using [Mustache Template Engine for Bash](https://github.com/tests-always-included/mo) Syntax,
-just mount a volume at /nginx-proxy/vhost.tpl, please see (vhost.tpl)[https://github.com/ball6847/nginx-proxy/blob/master/vhost.tpl] for original template.
+just mount a volume at /nginx-proxy/vhost.tpl, please see [vhost.tpl](https://github.com/ball6847/nginx-proxy/blob/master/vhost.tpl) for original template.
 
 ```sh
 docker run -d --name nginx-proxy \
