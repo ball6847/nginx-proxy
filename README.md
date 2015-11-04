@@ -37,12 +37,12 @@ docker run -d \
   ball6847/nginx-proxy
 ```
 
-## CREDIT
+### CREDIT
 
 - Base image using [LoicMahieu/alpine-nginx](https://github.com/LoicMahieu/alpine-nginx), [quay.io](https://quay.io/repository/loicmahieu/alpine-nginx?tag=latest)
 - [Mustache Template Engine for Bash](https://github.com/tests-always-included/mo)
 
 
-## MAINTAINER
+### MAINTAINER
 
 - Porawit Poboonma ([ball6847](https://github.com/ball6847))
