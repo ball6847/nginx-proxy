@@ -18,6 +18,7 @@ function valid_ip()
       && ${ip[2]} -le 255 && ${ip[3]} -le 255 ]]
     stat=$?
   fi
+
   return $stat
 }
 
@@ -25,6 +26,7 @@ function valid_ip()
 
 # remove proxy file if already exists
 if [[ -f $PROXY_FILE ]]; then
+  echo "[DEBUG] $PROXY_FILE found, try to remove and regenerate it."
   rm $PROXY_FILE
 fi
 
@@ -35,18 +37,24 @@ do
   IFS=" " read DOMAIN PROXY  <<< $entry
   IFS=":" read PROXY_HOST PROXY_PORT <<< $PROXY
 
+  echo "[DEBUG] processing $DOMAIN."
+
   # check proxy hostname, if it is a container name we need to resolve it to ip address
   if ! valid_ip $PROXY_HOST ; then
     PROXY_IP=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' $PROXY_HOST)
-  fi
 
-  # use proxy_host if proxy_ip cannot be resolved
-  if [[ "$PROXY_IP" == "" ]]; then
+    # use proxy_host if proxy_ip cannot be resolved
+    if [[ "$PROXY_IP" == "" ]]; then
+      echo "[DEBUG] cannot resolve container name to ip address, the entry will be skipped."
+      continue
+    fi
+  else
     PROXY_IP=$PROXY_HOST
   fi
 
   # default proxy port is 80
   if [[ "$PROXY_PORT" == "" ]]; then
+    echo "[DEBUG] no \$PROXY_PORT has been set, :80 will be used by default."
     PROXY_PORT="80"
   fi
 
@@ -58,13 +66,25 @@ do
   PROXY_PORT=$PROXY_PORT \
     mo /vhost.tpl >> $PROXY_FILE
 
+  echo "[DEBUG] added vhost rules for $DOMAIN."
+
   INDEX=$((INDEX+1))
 done < /proxy.conf
 
+# final check if /nginx-proxy.conf has not been created, we need to create an empty one
+if [[ ! -f $PROXY_FILE ]]; then
+  echo "[DEBUG] $PROXY_FILE not created, will create an empty one."
+  touch $PROXY_FILE
+fi
+
 # debug our result
-#cat $PROXY_FILE
+echo "[DEBUG] $PROXY_FILE result -------------------------------"
+cat $PROXY_FILE
 
 # reload nginx if neccessary
 if [[ `ps aux | grep -q nginx` ]]; then
+  echo "[DEBUG] nginx is running, try to reload its service."
   nginx -s reload
 fi
+
+echo "[DEBUG] completed!"
