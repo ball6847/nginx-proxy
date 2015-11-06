@@ -1,6 +1,6 @@
 # nginx-proxy
 
-nginx-proxy is simple nginx container acting as proxy server to your running container (do not use in production)
+nginx-proxy is a simple nginx container acting as proxy server to your running container (do not use in production)
 
 ## Usage:
 
@@ -8,7 +8,8 @@ nginx-proxy is simple nginx container acting as proxy server to your running con
 docker run -d \
   --name nginx-proxy \
   -p 80:80 \
-  -v $PWD/proxy.conf:/nginx-proxy/proxy.conf \
+  -v $PWD/proxy.conf:/proxy.conf \
+  -v /var/run/docker.sock:/var/run/docker.sock:ro \
   ball6847/nginx-proxy
 ```
 
@@ -26,14 +27,15 @@ while `example.com` is domain name you want to use to access the proxy, and `ngi
 ### VHOST Template
 
 You can use you own vhost template using [Mustache Template Engine for Bash](https://github.com/tests-always-included/mo) Syntax,
-just mount a volume at `/nginx-proxy/vhost.tpl`, please see [vhost.tpl](https://github.com/ball6847/nginx-proxy/blob/master/vhost.tpl) for original template.
+just mount a volume at `/vhost.tpl`, please see [vhost.tpl](https://github.com/ball6847/nginx-proxy/blob/master/vhost.tpl) for original template.
 
 ```bash
 docker run -d \
   --name nginx-proxy \
   -p 80:80 \
-  -v $PWD/proxy.conf:/nginx-proxy/proxy.conf \
-  -v $PWD/vhost.rpl:/nginx-proxy/vhost.tpl \
+  -v $PWD/proxy.conf:/proxy.conf \
+  -v $PWD/vhost.tpl:/vhost.tpl \
+  -v /var/run/docker.sock:/var/run/docker.sock:ro \
   ball6847/nginx-proxy
 ```
 
