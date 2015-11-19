@@ -11,6 +11,9 @@ server {
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header Connection "";
     proxy_http_version 1.1;
+    proxy_buffers 4 256k;
+    proxy_buffer_size 128k;
+    proxy_busy_buffers_size 256k;
   }
 }
 # END docker{{INDEX}}
