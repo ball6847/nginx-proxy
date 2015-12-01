@@ -82,7 +82,7 @@ echo "[DEBUG] $PROXY_FILE result -------------------------------"
 cat $PROXY_FILE
 
 # reload nginx if neccessary
-if [[ `ps aux | grep -q nginx` ]]; then
+if [[ `pgrep nginx > /dev/null; echo $?` == 0 ]]; then
   echo "[DEBUG] nginx is running, try to reload its service."
   nginx -s reload
 fi
